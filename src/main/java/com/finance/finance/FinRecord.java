@@ -1,11 +1,14 @@
 package com.finance.finance;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.finance.user.AppUser;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -44,14 +47,12 @@ public class FinRecord {
     @Min(0)
     private Long sum;
 
-    @ManyToOne(
-            fetch = FetchType.LAZY,
-            optional = false
-    )
-    @JoinColumn(
-            name = "user",
-            nullable = false
-    )
-    @JsonBackReference
+    @Email
+    private String userEmail;
+
+   // @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore
     private AppUser user;
 }

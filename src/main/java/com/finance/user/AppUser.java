@@ -2,6 +2,7 @@ package com.finance.user;
 
 import com.finance.finance.FinRecord;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -13,24 +14,26 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Entity
 public class AppUser implements UserDetails {
 
     @Id
     @SequenceGenerator(
-            name = "finance_sequence",
-            sequenceName = "finance_sequence",
+            name = "app_user_sequence",
+            sequenceName = "app_user_sequence",
             allocationSize = 1
     )
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "finance_sequence"
+            generator = "app_user_sequence"
     )
     private Long id;
 
@@ -52,10 +55,8 @@ public class AppUser implements UserDetails {
 
     @OneToMany(
             mappedBy = "user",
-            fetch = FetchType.EAGER,
-            cascade = CascadeType.ALL
-    )
-    private List<FinRecord> finances;
+            cascade = CascadeType.ALL)
+    private List<FinRecord> finances = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
